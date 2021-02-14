@@ -97,13 +97,14 @@ public class WorkbookFactory2 {
             int j2=0;  //对应头的位置指针
             if(counter){
                 Cell cell = bodyRow.createCell(j1);
-                cell.setCellValue(String.valueOf(i++));
+                cell.setCellValue(String.valueOf(i));
                 j1++;
             }
             for(; j2<heads.size(); j1++,j2++){
                 Cell cell = bodyRow.createCell(j1);
                 cell.setCellValue((String)unit.get(heads.get(j2)));
             }
+            i++;
         }
         return wb;
 

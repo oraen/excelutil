@@ -6,28 +6,12 @@ import com.oraen.oxygen.excelutil.annotation.SheetField;
 import com.oraen.oxygen.excelutil.exception.BreakNecessityException;
 import com.oraen.oxygen.excelutil.exception.UnavailableTypeException;
 import com.oraen.oxygen.excelutil.exception.UnspecificException;
-
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import com.oraen.oxygen.excelutil.exception.UnexpectedException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.prefs.BackingStoreException;
 
 public class DataConvertUtil {
-
-    public static<T> List<JSONObject> transform(List<T> list) throws UnexpectedException {
-
-        List<JSONObject> re = new LinkedList<JSONObject>();
-
-        for(T t : list){
-            JSONObject map = transform(t);
-            re.add(map);
-        }
-
-        return re;
-    }
-
 
 
     public static<T> List<T> transform(List<JSONObject> list, Class<T> clazz) throws UnavailableTypeException, UnexpectedException, UnspecificException, BreakNecessityException {
@@ -80,6 +64,19 @@ public class DataConvertUtil {
     }
 
 
+    public static List<JSONObject> transform(List<?> list) throws UnexpectedException {
+
+        List<JSONObject> re = new LinkedList<JSONObject>();
+
+        for(Object t : list){
+            JSONObject map = transform(t);
+            re.add(map);
+        }
+
+        return re;
+    }
+
+
     public static JSONObject transform(Object object) throws  UnexpectedException {
 
         try{
@@ -92,7 +89,11 @@ public class DataConvertUtil {
                 SheetField sf = entityField.getAnnotation(SheetField.class);
                 if(sf != null){
                     entityField.setAccessible(true);
-                    re.put(sf.value(), entityField.get(object));
+                    String value = String.valueOf(entityField.get(object));
+                    if("null".equals(value) || value == null){
+                        value = "";
+                    }
+                    re.put(sf.value(), value);
                 }
             }
 

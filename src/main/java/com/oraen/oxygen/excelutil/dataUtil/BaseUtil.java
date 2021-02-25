@@ -38,6 +38,29 @@ public class BaseUtil {
     }
 
 
+    public static int size(Sheet sheet){
+        int All = sheet.getLastRowNum() + 1;
+        int i, j;
+        for(i=0; i<All; i++){
+            Row row = sheet.getRow(i);
+            int cellNum = row.getLastCellNum() +1;
+            for(j=0; j<cellNum; j++){
+                Cell cell = row.getCell(j);
+                String value = get(cell);
+                if(! StringUtils.isBlank(value)){
+                    break;
+                }
+            }
+
+            if(j >= cellNum){
+                break;
+            }
+
+        }
+        return i;
+    }
+
+
     public static String get(Sheet sheet, int row, int line) {
         Row theRow = sheet.getRow(row);
         if(theRow != null){

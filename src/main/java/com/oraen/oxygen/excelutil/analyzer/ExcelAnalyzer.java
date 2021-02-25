@@ -20,7 +20,7 @@ public class ExcelAnalyzer extends AbstractExcelAnalyzer {
      */
     public List<JSONObject> getEntities(Sheet sheet) throws RepetitiveDataException {
         List<JSONObject> list = new LinkedList<JSONObject>();
-        int size = sheet.getLastRowNum() + 1;    //excel的记录数
+        int size = BaseUtil.size(sheet);    //excel的记录数
         List<String> head = BaseUtil.getHead(sheet);
         int itemNum = head.size();
 
@@ -42,11 +42,8 @@ public class ExcelAnalyzer extends AbstractExcelAnalyzer {
     public<T> List<T> getEntities(Sheet sheet, Class<T> clazz) throws UnavailableTypeException, UnspecificException, RepetitiveDataException, BreakNecessityException {
 
         //BaseUtil.check(sheet, clazz);
-
         List<JSONObject> SheetMap = getEntities(sheet);
-
         List<T> re = DataConvertUtil.transform(SheetMap, clazz);
-
         return re;
 
     }

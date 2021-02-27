@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class CustomException extends Exception {
-    SQLException a;
 
     private Map<String, Object> detail = new JSONObject();
 
@@ -19,7 +18,7 @@ public class CustomException extends Exception {
         super(message);
     }
 
-    public Map<String, ?> getDetail() {
+    public Map<String, Object> getDetail() {
         return detail;
     }
 

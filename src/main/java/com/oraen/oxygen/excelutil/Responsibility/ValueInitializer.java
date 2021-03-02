@@ -40,7 +40,6 @@ public final class ValueInitializer implements WorkNode<String> {
                     }
                 }
 
-
             }
 
         }

@@ -20,7 +20,7 @@ public final class NormVerifier implements WorkNode<Collection<?>> {
             }
         }
 
-        return null;
+        return normVerifier;
     }
 
 

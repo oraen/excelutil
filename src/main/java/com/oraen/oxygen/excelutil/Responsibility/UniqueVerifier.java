@@ -24,7 +24,7 @@ public final class UniqueVerifier implements WorkNode<List<?>>  {
             }
         }
 
-        return null;
+        return uniqueVerifier;
     }
     private  UniqueVerifier(){}
 

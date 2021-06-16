@@ -1,112 +1,61 @@
 package com.oraen.oxygen.excelutil;
 
-import com.alibaba.fastjson.JSONObject;
-import com.oraen.oxygen.excelutil.analyzer.AbstractExcelAnalyzer;
-import com.oraen.oxygen.excelutil.analyzer.ExcelAnalyzer;
-import com.oraen.oxygen.excelutil.dataUtil.BaseUtil;
-import com.oraen.oxygen.excelutil.workbootFactory.WorkbookFactory2;
+import com.oraen.oxygen.excelutil.component.WbCreator;
+import com.oraen.oxygen.excelutil.component.WbDissolver;
+import com.oraen.oxygen.excelutil.component.WbSEDissolver;
+import com.oraen.oxygen.excelutil.component.workbook.creator.EntitiesWbCreator;
+import com.oraen.oxygen.excelutil.component.workbook.creator.StandMapsWbCreator;
+import com.oraen.oxygen.excelutil.component.workbook.creator.StandTemplateCreator;
+import com.oraen.oxygen.excelutil.config.WbDissolverConfig;
 import org.apache.poi.ss.usermodel.Workbook;
+
 import java.util.List;
+import java.util.Map;
+
 
 
 public class ExcelUtil {
 
-    private static AbstractExcelAnalyzer excelAnalyzer = new ExcelAnalyzer();
+    private static WbDissolver<List<Map<String, Object>>> mapsWbDissolver = WbDissolverConfig.mapsWbDissolver;
 
-    private static WorkbookFactory2 workbookFactory2 = new WorkbookFactory2();
+    private static WbDissolver<List<String>> headsDissolver = WbDissolverConfig.headsDissolver;
 
-    public static List<JSONObject> getEntities(Workbook workbook) {
-        try{
-            return excelAnalyzer.getEntities(workbook.getSheetAt(0));
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+    private static WbSEDissolver entitiesWbDissolver = WbDissolverConfig.entitiesWbDissolver;
+
+
+    public static List<Map<String, Object>> getMaps(Workbook workbook) {
+        return mapsWbDissolver.getData(workbook.getSheetAt(0));
     }
 
 
     public static<T> List<T> getEntities(Workbook workbook, Class<T> clazz) {
-        try{
-            BaseUtil.check(workbook.getSheetAt(0), clazz);
-            return excelAnalyzer.getEntities(workbook.getSheetAt(0), clazz);
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+        return entitiesWbDissolver.getEntities(workbook.getSheetAt(0), clazz);
 
     }
 
 
-    public static<T> Workbook getWorkbook(List<String> heads, List<T> list, Class<T> clazz, final boolean counter) {
-        try{
-            return workbookFactory2.getWorkbook(heads, list, clazz, counter);
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
-    public static<T> Workbook getWorkbook(List<String> heads, List<T> list, Class<T> clazz) {
-        try{
-            return workbookFactory2.getWorkbook(heads, list, clazz);
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+    public static Workbook getWorkbookFromEntities(List<String> heads, List<?> list) {
+        WbCreator entitiesWbCreator = new EntitiesWbCreator(heads, list);
+        return entitiesWbCreator.creator();
     }
 
 
-
-
-    public static Workbook getWorkbook(List<String> heads, List<JSONObject> list, final boolean counter) {
-
-        return workbookFactory2.getWorkbook(heads, list, counter);
-    }
-
-    public static Workbook getWorkbook(List<String> heads, List<JSONObject> list) {
-
-        return workbookFactory2.getWorkbook(heads, list);
+    public static Workbook getWorkbookFromMaps(List<String> heads, List<Map<String, Object>> list) {
+        WbCreator mapsWbCreator = new StandMapsWbCreator(heads, list);
+        return mapsWbCreator.creator();
     }
 
 
-    public static Workbook getWorkbook(List<JSONObject> list, final boolean counter) {
-
-        return workbookFactory2.getWorkbook(list, counter);
+    public static Workbook getTemplate(List<String> head) {
+        return new StandTemplateCreator(head).creator();
     }
 
-
-    public static Workbook getWorkbook(List<JSONObject> list) {
-        return workbookFactory2.getWorkbook(list);
+    public static List<String> getHeads(Workbook workbook) {
+        return headsDissolver.getData(workbook.getSheetAt(0));
     }
 
+    public static void main(String[] args) {
 
-    public static<T> Workbook getWorkbook(List<T> list, Class<T> clazz, final boolean counter) {
-        try{
-            return workbookFactory2.getWorkbook(list, clazz, counter);
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-    public static<T> Workbook getWorkbook(List<T> list, Class<T> clazz) {
-        try{
-            return  workbookFactory2.getWorkbook(list, clazz);
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-    public static<T> Workbook getTemplate(List<String> head) {
-        return workbookFactory2.getTemplate(head);
-    }
-
-    public static<T> Workbook getTemplate(List<String> head, boolean counter) {
-        return workbookFactory2.getTemplate(head, counter);
     }
 
 

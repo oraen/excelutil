@@ -3,8 +3,8 @@ package entity;
 
 
 
-import com.oraen.oxygen.excelutil.annotation.SheetEntity;
-import com.oraen.oxygen.excelutil.annotation.SheetField;
+import com.oraen.oxygen.excelutil.SheetEntity;
+import com.oraen.oxygen.excelutil.SheetField;
 
 
 @SheetEntity
